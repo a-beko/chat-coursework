@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Чат</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f0f2f5; }
+        .header { background: #075e54; color: white; padding: 15px; text-align: center; }
+        .container { max-width: 800px; margin: 20px auto; padding: 20px; background: white; border-radius: 10px; }
+        .message { padding: 10px; margin: 10px 0; border-bottom: 1px solid #ddd; }
+        .author { font-weight: bold; color: #075e54; }
+        .time { font-size: 12px; color: gray; }
+        input, textarea, button { width: 100%; padding: 10px; margin: 5px 0; }
+        button { background: #075e54; color: white; border: none; cursor: pointer; }
+        button:hover { background: #054a44; }
+        .nav { background: #128c7e; padding: 10px; display: flex; justify-content: space-between; color: white; }
+        .nav a { color: white; text-decoration: none; margin: 0 10px; }
+        .error { color: red; background: #ffe6e6; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { color: green; background: #e6ffe6; padding: 10px; margin: 10px 0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>💬 Чат-приложение</h1>
+    </div>
+    <div class="nav">
+        <div>📱 Мессенджер</div>
+        <div>
+            {% if user.is_authenticated %}
+                👤 {{ user.username }}
+                <a href="{% url 'logout' %}">Выйти</a>
+            {% else %}
+                <a href="{% url 'login' %}">Войти</a>
+                <a href="{% url 'register' %}">Регистрация</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="{% if message.tags == 'error' %}error{% else %}success{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

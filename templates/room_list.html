@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Комнаты чата</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="room_name" placeholder="Название новой комнаты" required>
+    <button type="submit">➕ Создать комнату</button>
+</form>
+
+<h3>Доступные комнаты:</h3>
+{% for room in rooms %}
+    <div class="message">
+        <a href="{% url 'room_detail' room.id %}" style="font-size: 18px; text-decoration: none; color: #075e54;">💬 {{ room.name }}</a>
+        <div class="time">Создана: {{ room.created_at|date:"d.m.Y H:i" }}</div>
+    </div>
+{% empty %}
+    <p>Нет комнат. Создайте первую!</p>
+{% endfor %}
+{% endblock %}

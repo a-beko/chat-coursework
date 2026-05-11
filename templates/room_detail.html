@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>💬 {{ room.name }}</h2>
+
+<div style="max-height: 400px; overflow-y: auto; margin: 20px 0;">
+    {% for msg in messages %}
+        <div class="message">
+            <div class="author">{{ msg.author.username }}</div>
+            <div class="time">{{ msg.created_at|date:"H:i:s d.m.Y" }}</div>
+            <div style="margin-top: 5px;">{{ msg.text }}</div>
+        </div>
+    {% empty %}
+        <p>Нет сообщений</p>
+    {% endfor %}
+</div>
+
+<form method="POST">
+    {% csrf_token %}
+    <textarea name="message_text" rows="3" placeholder="Ваше сообщение..." required></textarea>
+    <button type="submit">📤 Отправить</button>
+</form>
+
+<a href="{% url 'room_list' %}">← Назад</a>
+{% endblock %}
